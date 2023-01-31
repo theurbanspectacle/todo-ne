@@ -26,6 +26,11 @@ const itemSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Todo',
     required: true
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   }
 });
 

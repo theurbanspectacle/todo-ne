@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Items, Todos } = require("../models");
+const { User, Item, Todo } = require("../models");
 const { signToken } = require("../utils/auth.js");
 
 const resolvers = {
@@ -12,25 +12,25 @@ const resolvers = {
     },
     todos: async (parent, args, context) => {
       if (context.user) {
-      return Todos.find({ user: context.user._id });
+      return Todo.find({ user: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
       },
     todo: async (parent, { id }, context) => {
       if (context.user) {
-      return Todos.findOne({ _id: id, user: context.user._id });
+      return Todo.findOne({ _id: id, user: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
       },
     items: async (parent, args, context) => {
       if (context.user) {
-      return Items.find({ user: context.user._id });
+      return Item.find({ user: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
       },
     item: async (parent, { id }, context) => {
       if (context.user) {
-      return Items.findOne({ _id: id, user: context.user._id });
+      return Item.findOne({ _id: id, user: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
       },
