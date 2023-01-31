@@ -1,16 +1,39 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User } = require("../models");
+const { User, Items, Todos } = require("../models");
 const { signToken } = require("../utils/auth.js");
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        return Profile.findOne({ _id: context.user._id });
+        return User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-    sayHi: () => "hello world"
+    todos: async (parent, args, context) => {
+      if (context.user) {
+      return Todos.find({ user: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
+      },
+    todo: async (parent, { id }, context) => {
+      if (context.user) {
+      return Todos.findOne({ _id: id, user: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
+      },
+    items: async (parent, args, context) => {
+      if (context.user) {
+      return Items.find({ user: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
+      },
+    item: async (parent, { id }, context) => {
+      if (context.user) {
+      return Items.findOne({ _id: id, user: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
+      },
   },
   Mutation: {
     register: async (parent, { name, email, password }) => {
@@ -33,6 +56,25 @@ const resolvers = {
 
       const token = signToken(user);
       return { token, user };
+    },
+    createTodo: async (parent, { name }, context) => {
+      if (context.user) {
+        return Todos.create({ name, user: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
+    },
+    createItem: async (parent, { todoId, name, priority, dateCreated, dueDate }, context) => {
+      if (context.user) {
+        return Items.create({
+          todoId,
+          name,
+          priority,
+          dateCreated,
+          dueDate,
+          user: context.user._id
+        });
+      }
+      throw new AuthenticationError("You need to be logged in!");
     },
   },
 };

@@ -18,6 +18,12 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
+  todos: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "todos",
+    }
+  ],
 });
 
 userSchema.pre("save", async function (next) {

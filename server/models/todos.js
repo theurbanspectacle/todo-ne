@@ -3,9 +3,12 @@ const { Schema, model } = require('mongoose');
 const todoSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
-  items: [itemSchema]
+  items: [{
+    type: Schema.Types.ObjectId,
+    ref: "Item"
+  }],
 });
 
 module.exports = model("Todo", todoSchema);

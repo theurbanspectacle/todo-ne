@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-// const dateFormat = require('../utils/dateFormat');
 
 const itemSchema = new Schema({
   description: {
@@ -23,6 +22,11 @@ const itemSchema = new Schema({
    dueDate: {
     type: Date
   },
+  todo: {
+    type: Schema.Types.ObjectId,
+    ref: 'Todo',
+    required: true
+  }
 });
 
 module.exports = model("Item", itemSchema);
