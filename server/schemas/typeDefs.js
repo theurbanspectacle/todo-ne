@@ -6,6 +6,7 @@ const typeDefs = gql`
     name: String
     email: String
     password: String
+    todos: [Todo]
   }
 
   type Auth {
@@ -13,9 +14,9 @@ const typeDefs = gql`
     user: User
   }
 
-  type Todos {
+  type Todo {
     _id: ID
-    name: String
+    title: String
     items: [Item]
   }
 
@@ -26,12 +27,14 @@ const typeDefs = gql`
     priority: Int
     dateCreated: String
     dueDate: String
+    todo: Todo
+    user: User
   } 
 
   type Query {
     me: User
-    todos: [Todos]
-    todo(id: ID!): Todos
+    todos(id: ID!): [Todo]
+    todo(id: ID!): Todo
     items: [Item]
     item(id: ID!): Item
   }
