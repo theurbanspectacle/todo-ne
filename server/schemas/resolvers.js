@@ -10,6 +10,7 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+    sayHi: () => "hello world"
   },
   Mutation: {
     register: async (parent, { name, email, password }) => {
