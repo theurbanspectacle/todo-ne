@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Item, Todo } = require("../models");
+const { User, Items, Todos } = require("../models");
 const { signToken } = require("../utils/auth.js");
 
 const resolvers = {
@@ -12,25 +12,14 @@ const resolvers = {
     },
     todos: async (parent, args, context) => {
       if (context.user) {
-      return Todo.find({ user: context.user._id });
-      }
-      throw new AuthenticationError("You need to be logged in!");
-      },
-    todo: async (parent, { id }, context) => {
-      if (context.user) {
-      return Todo.findOne({ _id: id, user: context.user._id });
-      }
-      throw new AuthenticationError("You need to be logged in!");
-      },
-    items: async (parent, args, context) => {
-      if (context.user) {
-      return Item.find({ user: context.user._id });
-      }
-      throw new AuthenticationError("You need to be logged in!");
-      },
-    item: async (parent, { id }, context) => {
-      if (context.user) {
-      return Item.findOne({ _id: id, user: context.user._id });
+       const user = await User.findById(context.user._id).populate({
+        path: "todos",
+        populate: {
+          path: "items",
+          model: "Item"
+        }
+       })
+       return user.todos
       }
       throw new AuthenticationError("You need to be logged in!");
       },
@@ -57,22 +46,28 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    createTodo: async (parent, { name }, context) => {
+    createTodo: async (parent, { title }, context) => {
       if (context.user) {
-        return Todos.create({ name, user: context.user._id });
+        const todo = await Todos.create({ title, user: context.user._id });
+        await User.findByIdAndUpdate(context.user._id, { $push: { todos: todo._id } })
+        return todo
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-    createItem: async (parent, { todoId, name, priority, dateCreated, dueDate }, context) => {
+    createItem: async (parent, { todoId, description, priority }, context) => {
       if (context.user) {
-        return Items.create({
-          todoId,
-          name,
+        try {
+        const item = await Items.create({
+          todo: todoId,
+          description,
           priority,
-          dateCreated,
-          dueDate,
           user: context.user._id
         });
+        await Todos.findByIdAndUpdate(todoId, { $push: { items: item._id } })
+        return item
+      } catch (err) {
+        console.log(err)
+      }
       }
       throw new AuthenticationError("You need to be logged in!");
     },
