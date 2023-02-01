@@ -33,7 +33,7 @@ const typeDefs = gql`
 
   type Query {
     me: User
-    todos(id: ID!): [Todo]
+    todos: [Todo]
     todo(id: ID!): Todo
     items: [Item]
     item(id: ID!): Item
@@ -43,7 +43,7 @@ const typeDefs = gql`
     register(name: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     createTodo(title: String!): Todo
-    createItem(todoId: ID!, description: String!, priority: Int, dateCreated: String, dueDate: String): Item
+    createItem(todoId: ID!, description: String!, priority: Int!, dateCreated: String, dueDate: String): Item
   }
 `;
 
