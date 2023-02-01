@@ -42,8 +42,18 @@ const typeDefs = gql`
   type Mutation {
     register(name: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
+
     createTodo(title: String!): Todo
+
     createItem(todoId: ID!, description: String!, priority: Int!, dateCreated: String, dueDate: String): Item
+
+    updateItem(itemId: ID!, description: String!, priority: Int!, dateCreated: String): Item
+    
+    updateTodo(todoId: ID!, title: String!): Todo
+
+    deleteItem(itemId: ID!): Item
+
+    deleteTodo(todoId: ID!): Todo
   }
 `;
 

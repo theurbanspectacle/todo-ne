@@ -46,6 +46,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+
     createTodo: async (parent, { title }, context) => {
       if (context.user) {
         const todo = await Todos.create({ title, user: context.user._id });
@@ -54,13 +55,17 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-    createItem: async (parent, { todoId, description, priority }, context) => {
+
+    createItem: async (parent, { todoId, description, completed, priority, dateCreated, dueDate }, context) => {
       if (context.user) {
         try {
         const item = await Items.create({
           todo: todoId,
           description,
+          completed,
           priority,
+          dateCreated,
+          dueDate,
           user: context.user._id
         });
         await Todos.findByIdAndUpdate(todoId, { $push: { items: item._id } })
@@ -71,7 +76,65 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+
+    updateTodo: async (parent, { todoId, title }, context) => {
+      if (context.user) {
+        try {
+          const updateTodo = await Todos.findByIdAndUpdate( todoId, {title}, {new: true})
+          return updateTodo
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      throw new AuthenticationError("You need to be logged in!");
+    },
+
+    updateItem: async (parent, { todoId, description, completed, priority, dateCreated, dueDate }, context) => {
+      if (context.user) { 
+        try {
+          const item =  await Items.findByIdAndUpdate({_id: itemId, user: context.user._id}, {$set: {description, completed, priority, dateCreated, dueDate}}, {new: true});
+          return item
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      throw new AuthenticationError("You need to be logged in!");
+    },
+
+    deleteTodo: async(parent, {todoId}, context) => {
+      if (context.user) {
+        try {
+          const todo = await Todos.findByIdAndDelete({_id: todoId, user: context.user._id});
+          await Items.deleteMany({todo: todoId});
+          return todo;
+        } catch (err) {
+          console.log(err);
+        }
+      throw new AuthenticationError("You need to be logged in!");
+      }
+    },
+
+    deleteItem: async(parent, {itemId}, context) => {
+      if (context.user) {
+        try {
+          const item = await Items.findByIdAndDelete({_id: itemId, user: context.user._id});
+          await Todos.findByIdAndUpdate(todoId, { $push: { items: item._id } });
+          return item;
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    throw new AuthenticationError("You need to be logged in!");
+    },
+
+    
   },
 };
+        
+    
+
+
+  
+
 
 module.exports = resolvers;

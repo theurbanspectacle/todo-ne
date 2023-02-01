@@ -19,7 +19,7 @@ const itemSchema = new Schema({
     type: Date,
     default: Date.now
   },
-   dueDate: {
+  dueDate: {
     type: Date
   },
   todo: {
