@@ -13,8 +13,7 @@ function Register() {
     showError: false,
   });
 
-  // eslint-disable-next-line no-unused-vars
-  const [register, { error, data }] = useMutation(REGISTER_USER);
+  const [register] = useMutation(REGISTER_USER);
 
   const handleInputChange = ({ target: { name, value } }) => {
     setFormState({ ...formState, [name]: value, showError: false });
@@ -35,7 +34,7 @@ function Register() {
     }
   };
   return (
-    <div>
+    <div className="basic-content">
       <h1>Sign Up</h1>
       {formState.showError && <InlineNotification style={{marginBottom: '2rem'}} title="Unable to sign up" subtitle="Check the form and try again." hideCloseButton={true} lowContrast={true}  />}
       <Form>

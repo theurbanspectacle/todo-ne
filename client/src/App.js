@@ -5,7 +5,6 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { Column, Grid } from "@carbon/react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Headers";
 
@@ -37,15 +36,13 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <Header />
-        <Grid className="wrapping-grid">
-          <Column lg={16} md={8} sm={4} max={16} xlg={16}>
+          <div className="wrapping-grid">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/sign-up" element={<Register />} />
             </Routes>
-          </Column>
-        </Grid>
+          </div>
       </Router>
     </ApolloProvider>
   );

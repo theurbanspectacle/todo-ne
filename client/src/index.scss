@@ -1,13 +1,68 @@
 @use '@carbon/react';
 
 .wrapping-grid {
-    margin-top: 4rem;
+    padding: 0 2rem;
+    padding-top: 4rem;
+    height: 100vh;
+    display: flex;
+    width: 100%;
+}
+
+.basic-content {
+    width: 100%;
 }
 
 h1 {
     margin-bottom: 2rem;
 }
 
+.cds--inline-notification__text-wrapper {
+    flex-direction: column;
+}
+
+.home-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.todo-wrapper {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 2rem;
+}
+
+.todo {
+    flex: 0 0 24rem;
+    padding: 1rem 2rem;
+    padding-right: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &--menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    &--title {
+        margin-bottom: 2rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: calc(100% - 2rem);
+    }
+
+    &--items {
+        flex: 1;
+        overflow-y: auto;
+    }
+}
+
 .todo-tile {
+    margin-right: 2rem;
     margin-bottom: 1rem;
 }

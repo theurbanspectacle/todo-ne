@@ -13,8 +13,7 @@ function Login() {
     showError: false,
   });
 
-  // eslint-disable-next-line no-unused-vars
-  const [Login, { error, data }] = useMutation(LOGIN_USER);
+  const [Login] = useMutation(LOGIN_USER);
 
   const handleInputChange = ({ target: { name, value } }) => {
     setFormState({ ...formState, [name]: value, showError: false });
@@ -40,7 +39,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="basic-content">
       <h1>Login</h1>
       {formState.showError && <InlineNotification style={{marginBottom: '2rem'}} title="Unable to login" subtitle="Check the email and password and try again." hideCloseButton={true} lowContrast={true}  />}
       <Form>

@@ -25,3 +25,12 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const NEW_TODO = gql`
+  mutation createTodo($title: String!) {
+    createTodo(title: $title) {
+      _id
+      title
+    }
+  }
+`;
