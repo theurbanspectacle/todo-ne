@@ -89,10 +89,10 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    updateItem: async (parent, { todoId, description, completed, priority, dateCreated, dueDate }, context) => {
+    updateItem: async (parent, data, context) => {
       if (context.user) { 
         try {
-          const item =  await Items.findByIdAndUpdate({_id: itemId, user: context.user._id}, {$set: {description, completed, priority, dateCreated, dueDate}}, {new: true});
+          const item =  await Items.findByIdAndUpdate(data.itemId, {$set: data}, {new: true});
           return item
         } catch (err) {
           console.log(err)
@@ -105,7 +105,9 @@ const resolvers = {
       if (context.user) {
         try {
           const todo = await Todos.findByIdAndDelete({_id: todoId, user: context.user._id});
+
           await Items.deleteMany({todo: todoId});
+
           return todo;
         } catch (err) {
           console.log(err);
@@ -118,7 +120,8 @@ const resolvers = {
       if (context.user) {
         try {
           const item = await Items.findByIdAndDelete({_id: itemId, user: context.user._id});
-          await Todos.findByIdAndUpdate(todoId, { $push: { items: item._id } });
+          await Todos.findByIdAndUpdate({_id: item.todo._id }, { $pull: { items: item._id } });
+          
           return item;
         } catch (err) {
           console.log(err)
@@ -138,3 +141,5 @@ const resolvers = {
 
 
 module.exports = resolvers;
+
+
