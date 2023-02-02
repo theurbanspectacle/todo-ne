@@ -1,15 +1,19 @@
-# todo-ne
+# TODO:NE
 
 ## Description
 
-- toDO(NE) is a simple TODO list application that allows you to list out things you need to do so that you can stay organized. 
+- TODO:NE is a simple TODO list application that allows you to list out things you need to do so that you can stay organized. 
 
-- toDO(NE) is a collaborative MERN-stack single-page application. It combines a scalable MongoDB back end, a GraphQL API, and an Express.js and Node.js server with a React front end. It implements user authentication with JWT to build a user-focused platform. 
+- TODO:NE is a collaborative MERN-stack single-page application. It combines a scalable MongoDB back end, a GraphQL API, and an Express.js and Node.js server with a React front end. It implements user authentication with JWT to build a user-focused platform. 
 
 
 ## Installation
 
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+- `npm install` from the root of the project
+- in the server folder, create your `.env` file using the `example.env` file
+- seed the database `npm run seed`
+- to start developing, `npm run develop`
+- to run production, build the client (`npm run build`), then run `npm run start`.
 
 ## Usage
 
@@ -40,4 +44,4 @@ N/A
 - Queries and Mutations for retrieving, adding, updating, and deleting data.
 - Heroku for deployment
 - JWT for authentication
-- Insert CSS styling here
+- Carbon Design System

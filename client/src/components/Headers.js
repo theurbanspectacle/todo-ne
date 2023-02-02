@@ -1,5 +1,5 @@
 import React from "react";
-import { UserAvatarFilled } from "@carbon/icons-react";
+import { Login, Logout } from "@carbon/icons-react";
 import {
   Header as CarbonHeader,
   HeaderName,
@@ -10,16 +10,30 @@ import {
   Theme
 } from "@carbon/react";
 import { useNavigate } from "react-router-dom";
+import AuthService from '../utils/auth';
 
 export default function Header() {
   const navigate = useNavigate();
 
-  const accountClick = () => {
+  const loginClick = () => {
     navigate('/login');
   };
 
   const homeClick = () => {
     navigate('/');
+  };
+
+  const logoutClick = () => {
+    AuthService.logout();
+  };
+
+  const isLoggedIn = () => {
+    if (localStorage && typeof localStorage.getItem === 'function') {
+      return !!localStorage.getItem('auth_token');
+    } else {
+      console.error('Unable to read from localStorage');
+      return false;
+    }
   };
 
   return (
@@ -32,9 +46,17 @@ export default function Header() {
           <HeaderMenuItem href="#" onClick={homeClick}>Home</HeaderMenuItem>
         </HeaderNavigation>
         <HeaderGlobalBar>
-          <HeaderGlobalAction aria-label="Account" tooltipAlignment="end" onClick={accountClick}>
-            <UserAvatarFilled />
-          </HeaderGlobalAction>
+          {
+            isLoggedIn() ? (
+              <HeaderGlobalAction aria-label="Log out" tooltipAlignment="end" onClick={logoutClick}>
+                <Logout />
+              </HeaderGlobalAction>
+            ) : (
+              <HeaderGlobalAction aria-label="Log in" tooltipAlignment="end" onClick={loginClick}>
+                <Login />
+              </HeaderGlobalAction>
+            )
+          }
         </HeaderGlobalBar>
       </CarbonHeader>
     </Theme>
