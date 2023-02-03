@@ -45,9 +45,9 @@ const typeDefs = gql`
 
     createTodo(title: String!): Todo
 
-    createItem(todoId: ID!, description: String!, priority: Int!, dateCreated: String, dueDate: String): Item
+    createItem(todoId: ID!, description: String!, priority: Int!, dateCreated: String, dueDate: String, completed: Boolean): Item
 
-    updateItem(itemId: ID!, description: String!, priority: Int!, dateCreated: String): Item
+    updateItem(itemId: ID!, description: String!, priority: Int!, dueDate: String, completed: Boolean!): Item
     
     updateTodo(todoId: ID!, title: String!): Todo
 

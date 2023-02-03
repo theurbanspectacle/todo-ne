@@ -34,3 +34,52 @@ export const NEW_TODO = gql`
     }
   }
 `;
+
+export const NEW_TODO_ITEM = gql`
+  mutation createItem($todoId: ID!, $description: String!, $priority: Int!, $dueDate: String, $completed: Boolean) {
+    createItem(todoId: $todoId, description: $description, priority: $priority, dueDate: $dueDate, completed: $completed) {
+      _id
+      description
+      priority
+      dueDate
+      dateCreated
+    }
+  }
+`;
+
+export const EDIT_TODO_ITEM = gql`
+  mutation updateItem($itemId: ID!, $description: String!, $priority: Int!, $dueDate: String, $completed: Boolean!) {
+    updateItem(itemId: $itemId, description: $description, priority: $priority, dueDate: $dueDate, completed: $completed) {
+      _id
+      description
+      completed
+      priority
+      dueDate
+    }
+  }
+`;
+
+export const DELETE_TODO_ITEM = gql`
+  mutation deleteItem($itemId: ID!) {
+    deleteItem(itemId: $itemId) {
+      _id
+    }
+  }
+`;
+
+export const EDIT_TODO = gql`
+  mutation updateTodo($todoId: ID!, $title: String!) {
+    updateTodo(todoId: $todoId, title: $title) {
+      _id
+      title
+    }
+  }
+`;
+
+export const DELETE_TODO = gql`
+  mutation deleteTodo($todoId: ID!) {
+    deleteTodo(todoId: $todoId) {
+      _id
+    }
+  }
+`;

@@ -10,6 +10,7 @@ function Login() {
   const [formState, setFormState] = useState({
     email: "",
     password: "",
+    errorMsg: '',
     showError: false,
   });
 
@@ -19,18 +20,23 @@ function Login() {
     setFormState({ ...formState, [name]: value, showError: false });
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
+  const handleFormSubmit = async () => {
+    if (!formState.email || !formState.password) {
+      return;
+    }
 
     try {
       const { data } = await Login({
-        variables: { ...formState },
+        variables: {
+          email: formState.email,
+          password: formState.password,
+        },
       });
 
       Auth.login(data.login.token);
     } catch (err) {
-      setFormState({...formState, showError: true});
-      console.error(err);
+      console.warn(err);
+      setFormState({...formState, showError: true, errorMsg: err?.message || ''});
     }
   };
 
@@ -38,10 +44,16 @@ function Login() {
     navigate('/sign-up');
   };
 
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+      handleFormSubmit();
+    }
+  }
+
   return (
     <div className="basic-content">
       <h1>Login</h1>
-      {formState.showError && <InlineNotification style={{marginBottom: '2rem'}} title="Unable to login" subtitle="Check the email and password and try again." hideCloseButton={true} lowContrast={true}  />}
+      {formState.showError && <InlineNotification style={{marginBottom: '2rem'}} title="Unable to login" subtitle={formState.errorMsg || 'Check the email and password and try again.'} hideCloseButton={true} lowContrast={true}  />}
       <Form>
         <Stack gap={7}>
           <TextInput
@@ -52,6 +64,7 @@ function Login() {
             name="email"
             value={formState.email}
             onChange={handleInputChange}
+            onKeyUp={handleEnter}
           />
           <PasswordInput
             id="login-password"
@@ -60,6 +73,7 @@ function Login() {
             name="password"
             value={formState.password}
             onChange={handleInputChange}
+            onKeyUp={handleEnter}
           />
           <Button disabled={!formState.email || !formState.password} type="button" onClick={handleFormSubmit}>Login</Button>
           <div>-- OR --</div>

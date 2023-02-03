@@ -12,8 +12,8 @@ const itemSchema = new Schema({
   priority: {
     type: Number,
     min: 1,
-    max: 5,
-    default: 0
+    max: 3,
+    default: 3
   },
   dateCreated: {
     type: Date,

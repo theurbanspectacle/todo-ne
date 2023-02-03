@@ -52,7 +52,7 @@ function Home() {
           kind="info"
           lowContrast={true}
           hideCloseButton={true}
-          subtitle='Press the New TODO button to get started.'
+          subtitle='Press the New Category button to get started.'
           title="Start creating your TODO's!"
         />
       );
@@ -84,7 +84,7 @@ function Home() {
           <h1>TODO</h1>
         </Column>
         <Column lg={8} md={4} sm={4} max={8} xlg={8}>
-          <Button onClick={newTodo} style={{marginLeft: 'auto', display: 'block'}}>New TODO</Button>
+          <Button onClick={newTodo} style={{marginLeft: 'auto', display: 'block'}}>New Category</Button>
         </Column>
       </Grid>
       {mainContent}

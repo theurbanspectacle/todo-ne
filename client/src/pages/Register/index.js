@@ -10,6 +10,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
+    errorMsg: '',
     showError: false,
   });
 
@@ -19,24 +20,37 @@ function Register() {
     setFormState({ ...formState, [name]: value, showError: false });
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
+  const handleFormSubmit = async () => {
+    if (!formState.email || !formState.name || !formState.password) {
+      return;
+    }
 
     try {
       const { data } = await register({
-        variables: { ...formState },
+        variables: {
+          name: formState.name,
+          email: formState.email,
+          password: formState.password,
+        },
       });
-      console.log(data);
       Auth.login(data.register.token);
     } catch (err) {
-      setFormState({...formState, showError: true});
-      console.error(err);
+      console.warn(err);
+      setFormState({...formState, showError: true, errorMsg: err?.message || ''});
     }
   };
+
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+      handleFormSubmit();
+    }
+  }
+
+
   return (
     <div className="basic-content">
       <h1>Sign Up</h1>
-      {formState.showError && <InlineNotification style={{marginBottom: '2rem'}} title="Unable to sign up" subtitle="Check the form and try again." hideCloseButton={true} lowContrast={true}  />}
+      {formState.showError && <InlineNotification style={{marginBottom: '2rem'}} title="Unable to sign up" subtitle={formState.errorMsg || 'Check the form and try again.'} hideCloseButton={true} lowContrast={true}  />}
       <Form>
         <Stack gap={7}>
           <TextInput
@@ -46,6 +60,7 @@ function Register() {
             name="name"
             value={formState.name}
             onChange={handleInputChange}
+            onKeyUp={handleEnter}
           />
           <TextInput
             id="register-email"
@@ -55,6 +70,7 @@ function Register() {
             name="email"
             value={formState.email}
             onChange={handleInputChange}
+            onKeyUp={handleEnter}
           />
           <PasswordInput
             id="register-password"
@@ -63,6 +79,7 @@ function Register() {
             name="password"
             value={formState.password}
             onChange={handleInputChange}
+            onKeyUp={handleEnter}
           />
           <Button disabled={!formState.password || !formState.email || !formState.name} onClick={handleFormSubmit}>Sign Up</Button>
         </Stack>

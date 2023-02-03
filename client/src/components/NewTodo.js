@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 export default function NewTodo(props) {
   const [formState, setFormState] = useState({
-    title: '',
+    title: props.initialTitle || '',
   }); 
 
   const handleInputChange = ({ target: { name, value } }) => {
@@ -13,13 +13,13 @@ export default function NewTodo(props) {
 
   return (
     <ComposedModal open={true} onClose={props.close}>
-      <ModalHeader label="New TODO" />
+      <ModalHeader>{props.initialTitle ? `Edit ${props.initialTitle}` : 'New Category'}</ModalHeader>
       <ModalBody hasForm>
         <TextInput id="modal-new-title" labelText="Title" name="title" required={true} value={formState.title} onChange={handleInputChange} />
       </ModalBody>
       <ModalFooter>
         <Button kind="secondary" onClick={props.close}>Cancel</Button>
-        <Button disabled={!formState.title} kind="primary" onClick={() => props.save(formState.title)}>Create</Button>
+        <Button disabled={!formState.title} kind="primary" onClick={() => props.save(formState.title)}>{props.initialTitle ? 'Save' : 'Create'}</Button>
       </ModalFooter>
     </ComposedModal>
   );
