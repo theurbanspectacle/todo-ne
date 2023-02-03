@@ -6,7 +6,7 @@ export default function NewTodoItem(props) {
   const [formState, setFormState] = useState({
     description: props.item?.description || '',
     priority: props.item?.priority || '3',
-    dueDate: props.item?.dueDate || '',
+    dueDate: props.item?.dueDate ? new Date(Number(props.item?.dueDate)).toISOString() : '',
   }); 
 
   const handleInputChange = ({ target: { name, value } }) => {

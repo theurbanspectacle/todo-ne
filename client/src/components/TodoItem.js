@@ -98,7 +98,7 @@ export default function TodoItem(props) {
         <div className="info-area">
           <p>{props.item.description}</p>
           <p className="sub-info">Priority: {getPriority(props.item.priority)}</p>
-          {!!props.item.dueDate && <p className="sub-info right-content">Due Date: {new Date(props.item.dueDate).toLocaleDateString()}</p>}
+          {!!props.item.dueDate && <p className="sub-info right-content">Due Date: {new Date(Number(props.item.dueDate)).toLocaleDateString()}</p>}
         </div>
       </Tile>
       {todoItemState.showEditModal && <NewTodoItem item={props.item} todoName={props.parentName} close={() => setTodoItemState({...todoItemState, showEditModal: false})} save={(data) => saveTodoItem(Object.assign({}, props.item, data))} />}
