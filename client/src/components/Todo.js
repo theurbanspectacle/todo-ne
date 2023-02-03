@@ -28,7 +28,7 @@ export default function Todo(props) {
         },
       });
 
-      window.location.reload();
+      props.reloadData();
     } catch (error) {
       console.error("Uanble to save TODO", error);
     }
@@ -46,7 +46,7 @@ export default function Todo(props) {
         },
       });
 
-      window.location.reload();
+      props.reloadData();
     } catch (error) {
       console.error("Uanble to delete TODO", error);
     }
@@ -122,7 +122,7 @@ export default function Todo(props) {
           },
         });
   
-        window.location.reload();
+        props.reloadData();
       } catch (error) {
         console.error("Uanble to move TODO item", error);
       }
@@ -148,6 +148,8 @@ export default function Todo(props) {
   };
 
   const createTodoItem = async (item) => {
+    setTodoState({...todoState, showNewItemModal: false});
+
     try {
       await SaveNewTodoItem({
         variables: {
@@ -158,12 +160,10 @@ export default function Todo(props) {
         },
       });
 
-      window.location.reload();
+      props.reloadData();
     } catch (error) {
       console.error("Uanble to create TODO item", error);
     }
-
-    setTodoState({...todoState, newTodoModal: false});
   }
 
   return (
@@ -175,7 +175,7 @@ export default function Todo(props) {
         </OverflowMenu>
         <div className="todo--title">{props.item?.title || 'UNKNOWN'}</div>
         <div className="todo--items">
-          {!!(props.item?.items && props.item?.items.length) && props.item.items.map((item, index) => <TodoItem onDragStart={(event) => dragStart(event, item)} onDragEnd={dragEnd} item={item} key={index} parentName={props.item?.title} />)}
+          {!!(props.item?.items && props.item?.items.length) && props.item.items.map((item, index) => <TodoItem reloadData={props.reloadData} onDragStart={(event) => dragStart(event, item)} onDragEnd={dragEnd} item={item} key={index} parentName={props.item?.title} />)}
           <ClickableTile onClick={newItem} light={true} className="todo-tile add-todo-item-action" key={props.index}><span>Add TODO</span><AddAlt size={24} /></ClickableTile>
         </div>
       </Tile>

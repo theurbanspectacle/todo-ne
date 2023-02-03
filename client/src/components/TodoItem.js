@@ -27,7 +27,7 @@ export default function TodoItem(props) {
         },
       });
 
-      window.location.reload();
+      props.reloadData();
     } catch (error) {
       console.error("Uanble to save TODO item", error);
     }
@@ -45,7 +45,7 @@ export default function TodoItem(props) {
         },
       });
 
-      window.location.reload();
+      props.reloadData();
     } catch (error) {
       console.error("Uanble to delete TODO item", error);
     }

@@ -13,7 +13,7 @@ function Home() {
     killerError: false,
   }); 
 
-  const { loading, error, data } = useQuery(QUERY_TODO);
+  const { loading, error, data, refetch } = useQuery(QUERY_TODO);
   const [SaveNewTodo] = useMutation(NEW_TODO);
   const navigate = useNavigate();
   const todos = data?.todos || [];
@@ -22,13 +22,17 @@ function Home() {
     setHomeState({...homeState, newTodoModal: true});
   }
 
+  const reloadData = () => {
+    refetch();
+  }
+
   const saveTodo = async (title) => {
     try {
       await SaveNewTodo({
         variables: { title },
       });
 
-      window.location.reload();
+      reloadData();
     } catch (error) {
       console.error("Uanble to create TODO", error);
       setHomeState({...homeState, killerError: true});
@@ -43,7 +47,7 @@ function Home() {
     if (todos.length) {
       mainContent = (
         <div className="todo-wrapper">
-          {todos.map((item, index) => <Todo item={item} key={index} />)}
+          {todos.map((item, index) => <Todo reloadData={reloadData} item={item} key={index} />)}
         </div>
       );
     } else {
