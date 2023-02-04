@@ -18,24 +18,28 @@ const server = new ApolloServer({
   context: authMiddleware,
 });
 
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 if (process.env.NODE_ENV === "production") {
+  console.log('RUNNING FOR PRODUCTION');
   app.use(express.static(join(__dirname, "..", "client", "build")));
+  app.get("/*", (req, res) => {
+    res.sendFile(join(__dirname, "..", "client", "build", "index.html"));
+  });
+} else {
+  console.log('RUNNING FOR DEVELOPMENT');
+  app.get("/", (req, res) => {
+    res.sendFile(join(__dirname, "client", "build", "index.html"));
+  });
 }
-
-app.get("/", (req, res) => {
-  res.sendFile(join(__dirname, "client", "build", "index.html"));
-});
 
 const startApolloServer = async (typeDefs, resolvers) => {
   await server.start();
   server.applyMiddleware({ app });
 
   db.once("open", () => app.listen(PORT));
-  console.log("app is listening")
+  console.log(`app is listening on ${PORT}`)
 };
 
 startApolloServer(typeDefs, resolvers);
