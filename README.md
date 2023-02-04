@@ -11,7 +11,6 @@
 
 - `npm install` from the root of the project
 - in the server folder, create your `.env` file using the `example.env` file
-- seed the database `npm run seed`
 - to start developing, `npm run develop`
 - to run production, build the client (`npm run build`), then run `npm run start`.
 

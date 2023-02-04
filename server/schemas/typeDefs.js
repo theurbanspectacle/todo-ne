@@ -17,6 +17,7 @@ const typeDefs = gql`
   type Todo {
     _id: ID
     title: String
+    arrange: Int
     items: [Item]
   }
 
@@ -43,13 +44,13 @@ const typeDefs = gql`
     register(name: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
 
-    createTodo(title: String!): Todo
+    createTodo(title: String!, arrange: Int!): Todo
 
     createItem(todoId: ID!, description: String!, priority: Int!, dateCreated: String, dueDate: String, completed: Boolean): Item
 
     updateItem(itemId: ID!, description: String!, priority: Int!, dueDate: String, completed: Boolean!): Item
     
-    updateTodo(todoId: ID!, title: String!): Todo
+    updateTodo(todoId: ID!, title: String!, arrange: Int!): Todo
 
     deleteItem(itemId: ID!): Item
 

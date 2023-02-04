@@ -5,6 +5,10 @@ const todoSchema = new Schema({
     type: String,
     required: true,
   },
+  arrange: {
+    type: Number,
+    required: true,
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

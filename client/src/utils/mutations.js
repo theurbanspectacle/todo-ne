@@ -27,10 +27,11 @@ export const LOGIN_USER = gql`
 `;
 
 export const NEW_TODO = gql`
-  mutation createTodo($title: String!) {
-    createTodo(title: $title) {
+  mutation createTodo($title: String!, $arrange: Int!) {
+    createTodo(title: $title, arrange: $arrange) {
       _id
       title
+      arrange
     }
   }
 `;
@@ -68,10 +69,11 @@ export const DELETE_TODO_ITEM = gql`
 `;
 
 export const EDIT_TODO = gql`
-  mutation updateTodo($todoId: ID!, $title: String!) {
-    updateTodo(todoId: $todoId, title: $title) {
+  mutation updateTodo($todoId: ID!, $title: String!, $arrange: Int!) {
+    updateTodo(todoId: $todoId, title: $title, arrange: $arrange) {
       _id
       title
+      arrange
     }
   }
 `;

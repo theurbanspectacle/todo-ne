@@ -47,9 +47,9 @@ const resolvers = {
       return { token, user };
     },
 
-    createTodo: async (parent, { title }, context) => {
+    createTodo: async (parent, { title, arrange }, context) => {
       if (context.user) {
-        const todo = await Todos.create({ title, user: context.user._id });
+        const todo = await Todos.create({ title, arrange, user: context.user._id });
         await User.findByIdAndUpdate(context.user._id, { $push: { todos: todo._id } })
         return todo
       }
@@ -77,10 +77,10 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    updateTodo: async (parent, { todoId, title }, context) => {
+    updateTodo: async (parent, { todoId, title, arrange }, context) => {
       if (context.user) {
         try {
-          const updateTodo = await Todos.findByIdAndUpdate( todoId, {title}, {new: true})
+          const updateTodo = await Todos.findByIdAndUpdate( todoId, {title, arrange}, {new: true})
           return updateTodo
         } catch (err) {
           console.log(err)

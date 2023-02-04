@@ -5,6 +5,7 @@ query todo {
   todos {
     _id
     title
+    arrange
     items {
       _id
       description

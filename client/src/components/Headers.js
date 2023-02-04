@@ -39,8 +39,8 @@ export default function Header() {
   return (
     <Theme theme="g100">
       <CarbonHeader aria-label="TODO:NE">
-        <HeaderName href="#" onClick={homeClick} prefix="TODO:">
-          NE
+        <HeaderName href="#" onClick={homeClick} prefix="TO">
+          DO:NE
         </HeaderName>
         <HeaderNavigation aria-label="TODO:NE">
           <HeaderMenuItem href="#" onClick={homeClick}>Home</HeaderMenuItem>

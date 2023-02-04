@@ -1,6 +1,6 @@
 
-import { ClickableTile, OverflowMenu, OverflowMenuItem, Tile } from "@carbon/react";
-import { Menu, AddAlt } from "@carbon/icons-react";
+import { ClickableTile, IconButton, OverflowMenu, OverflowMenuItem, Tile } from "@carbon/react";
+import { Menu, AddAlt, ChevronLeft, ChevronRight } from "@carbon/icons-react";
 import React, { useState } from "react";
 import TodoItem from './TodoItem';
 import Confirmation from "./Confirmation";
@@ -25,6 +25,7 @@ export default function Todo(props) {
         variables: {
           todoId: props.item?._id,
           title: title,
+          arrange: props.item?.arrange
         },
       });
 
@@ -166,14 +167,71 @@ export default function Todo(props) {
     }
   }
 
+  const moveLeft = async () => {
+    try {
+      await SaveTodo({
+        variables: {
+          todoId: props.item?._id,
+          title: props.item?.title,
+          arrange: props.item?.arrange - 1
+        },
+      });
+
+      await SaveTodo({
+        variables: {
+          todoId: props.leftItem?._id,
+          title: props.leftItem?.title,
+          arrange: props.leftItem?.arrange + 1
+        },
+      });
+
+      props.reloadData();
+    } catch (error) {
+      console.error("Unable to move TODO left", error);
+    }
+  }
+
+  const moveRight = async () => {
+    try {
+      await SaveTodo({
+        variables: {
+          todoId: props.item?._id,
+          title: props.item?.title,
+          arrange: props.item?.arrange + 1
+        },
+      });
+      
+      await SaveTodo({
+        variables: {
+          todoId: props.rightItem?._id,
+          title: props.rightItem?.title,
+          arrange: props.rightItem?.arrange - 1
+        },
+      });
+
+      props.reloadData();
+    } catch (error) {
+      console.error("Unable to move TODO right", error);
+    }
+  }
+
+
   return (
     <>
       <Tile className={`todo ${todoState.dragOver ? 'dragging-over' : ''}`} onDragOver={dragOver} onDragEnter={dragEnter} onDragLeave={dragLeave} onDrop={drop} id={props.item?._id}>
-        <OverflowMenu className="todo--menu" flipped={true} renderIcon={Menu} ariaLabel="Menu">
-          <OverflowMenuItem itemText="Edit" onClick={editItem} />
-          <OverflowMenuItem itemText="Delete" isDelete={true} onClick={deleteItem}/>
-        </OverflowMenu>
-        <div className="todo--title">{props.item?.title || 'UNKNOWN'}</div>
+        <div className="todo--header">
+          <IconButton align='bottom' label='Move to the left' className='cds--btn--icon-only' kind='ghost' disabled={!props.leftItem} onClick={moveLeft}>
+            <ChevronLeft size={16}/>
+          </IconButton>
+          <div className="todo--title">{props.item?.title || 'UNKNOWN'}</div>
+          <OverflowMenu className="todo--menu" flipped={true} renderIcon={Menu} ariaLabel="Menu">
+            <OverflowMenuItem itemText="Edit" onClick={editItem} />
+            <OverflowMenuItem itemText="Delete" isDelete={true} onClick={deleteItem}/>
+          </OverflowMenu>
+          <IconButton align='bottom' label='Move to the left' className='cds--btn--icon-only' kind='ghost' disabled={!props.rightItem} onClick={moveRight}>
+            <ChevronRight size={16}/>
+          </IconButton>
+        </div>
         <div className="todo--items">
           {!!(props.item?.items && props.item?.items.length) && props.item.items.map((item, index) => <TodoItem reloadData={props.reloadData} onDragStart={(event) => dragStart(event, item)} onDragEnd={dragEnd} item={item} key={index} parentName={props.item?.title} />)}
           <ClickableTile onClick={newItem} light={true} className="todo-tile add-todo-item-action" key={props.index}><span>Add TODO</span><AddAlt size={24} /></ClickableTile>
